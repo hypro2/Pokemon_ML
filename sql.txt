@@ -1,0 +1,39 @@
+CREATE Table pokemon_winner
+AS
+SELECT A.idx,B.Type1, B.Type2, B.Total,
+B.HP, B.Attack, B.Defense, B.SpAtk, B.SpDef,
+B.Speed, B.Legendary, B.Type1_Win_rate
+FROM combats A
+JOIN Pokemon2 B
+ON A.Winner = B.field1;
+
+
+CREATE Table pokemon_loser
+AS
+SELECT A.idx, B.Type1, B.Type2, B.Total,
+B.HP, B.Attack, B.Defense, B.SpAtk, B.SpDef,
+B.Speed, B.Legendary, B.Type1_Win_rate
+FROM combats A
+JOIN Pokemon2 B
+ON A.Loser = B.field1;
+
+
+CREATE TABLE pokemon_Losediff
+AS
+SELECT A.idx, A.Type1 AS winnerType1, B.Type1 AS loserType1,
+(B.total - A.total) AS totalDiff ,(B.HP - A.HP) AS HPDiff, (B.attack - A.attack)AS attackDiff, 
+(B.Defense - A.Defense) AS DefenseDiff , (B.SpAtk - A.SpAtk) AS SpAtkDiff ,
+(B.SpDef - A.SpDef)  AS SpdefDiff, (B.Speed - A.Speed) As SpeedDiff ,B.Legendary AS Legendary
+FROM pokemon_winner A
+JOIN pokemon_loser B
+ON A.idx = B.idx;
+
+CREATE TABLE pokemon_Windiff
+AS
+SELECT A.idx, A.Type1 AS winnerType1, B.Type1 AS loserType1,
+(A.total - B.total) AS totalDiff ,(A.HP - B.HP) AS HPDiff, (A.attack - B.attack)AS attackDiff, 
+(A.Defense - B.Defense) AS DefenseDiff , (A.SpAtk - B.SpAtk) AS SpAtkDiff ,
+(A.SpDef - B.SpDef)  AS SpdefDiff,(A.Speed - B.Speed) As SpeedDiff, A.Legendary AS Legendary
+FROM pokemon_winner A
+JOIN pokemon_loser B
+ON A.idx = B.idx;
